@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Haruby.LlmClient
 {
@@ -139,6 +140,37 @@ namespace Haruby.LlmClient
             InputPrompt = OutputMessage;
         }
 
+        private void SaveJob(DateTime timeStamp, OutputPacket target)
+        {
+            try
+            {
+                string saveDirPath = Path.GetFullPath(SaveDirName);
+                Directory.CreateDirectory(saveDirPath);
+
+                string filename = DateTimeToFileName(timeStamp);
+                File.WriteAllText(Path.Combine(saveDirPath, filename + ".txt"), target.Message);
+
+                using Stream jsonFile = File.Create(Path.Combine(saveDirPath, filename + ".json"));
+                JsonSerializer.Serialize(jsonFile, target);
+
+                // Fake delay
+                Thread.Sleep(200);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unexpected error occured.\n\n" + ex, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            finally
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    Cursor = Cursors.Arrow;
+                    SaveButton.IsEnabled = true;
+                });
+            }
+        }
+
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             if (lastOutput is null)
@@ -148,26 +180,11 @@ namespace Haruby.LlmClient
             }
 
             SaveButton.IsEnabled = false;
-            try
-            {
-                string saveDirPath = Path.GetFullPath(SaveDirName);
-                Directory.CreateDirectory(saveDirPath);
+            Cursor = Cursors.AppStarting;
 
-                string filename = DateTimeToFileName(DateTime.Now);
-                File.WriteAllText(Path.Combine(saveDirPath, filename + ".txt"), lastOutput.Message);
-
-                using Stream jsonFile = File.Create(Path.Combine(saveDirPath, filename + ".json"));
-                JsonSerializer.Serialize(jsonFile, lastOutput);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Unexpected error occured.\n\n" + ex, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            finally
-            {
-                SaveButton.IsEnabled = true;
-            }
+            DateTime timeStamp = DateTime.Now;
+            OutputPacket target = lastOutput;
+            Task.Run(() => SaveJob(timeStamp, target));
         }
 
         static string DateTimeToFileName(DateTime dateTime)
