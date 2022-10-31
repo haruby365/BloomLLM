@@ -1,0 +1,102 @@
+﻿<Window x:Class="Haruby.LlmClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Haruby.LlmClient"
+        mc:Ignorable="d" FontSize="18" WindowStartupLocation="CenterScreen"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="LLM Client" Height="600" Width="1000">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="4" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="36"/>
+                <RowDefinition Height="36"/>
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
+
+            <TextBox Grid.Row="0" Margin="2" Text="{Binding InputPrompt, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" />
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="140" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="30" />
+                </Grid.ColumnDefinitions>
+
+                <CheckBox Grid.Column="0" IsChecked="{Binding IsUsingInputSeed}" Margin="4" VerticalAlignment="Center" VerticalContentAlignment="Center">Seed</CheckBox>
+                <TextBox Grid.Column="1" Margin="4" VerticalAlignment="Center" Text="{Binding InputSeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                <Button Grid.Column="2" Margin="2" Click="NextSeedButton_Click">N</Button>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="140" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Margin="4" VerticalAlignment="Center">Max New Tokens</TextBlock>
+                <TextBox Grid.Column="1" Margin="4" VerticalAlignment="Center" Text="{Binding InputMaxNewTokens, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+            </Grid>
+
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Name="GenerateButton" Margin="2" Click="GenerateButton_Click">Generate</Button>
+            </Grid>
+        </Grid>
+
+        <GridSplitter Grid.Column="1" Background="LightGray" HorizontalAlignment="Stretch" />
+
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="36"/>
+                <RowDefinition Height="36"/>
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
+
+            <TextBox Grid.Row="0" Margin="2" Text="{Binding OutputMessage}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" />
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="140" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Margin="4" VerticalAlignment="Center">Seed</TextBlock>
+                <TextBlock Grid.Column="1" Margin="4" VerticalAlignment="Center" Text="{Binding OutputSeed}" />
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="140" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Margin="4" VerticalAlignment="Center">Max New Tokens</TextBlock>
+                <TextBlock Grid.Column="1" Margin="4" VerticalAlignment="Center" Text="{Binding OutputMaxNewTokens}" />
+            </Grid>
+            
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Margin="2" Click="SendToInputButton_Click">Send to Input</Button>
+                <Button Grid.Column="1" Name="SaveButton" Margin="2" Click="SaveButton_Click">Save</Button>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
