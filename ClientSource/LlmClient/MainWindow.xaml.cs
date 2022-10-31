@@ -74,6 +74,11 @@ namespace Haruby.LlmClient
             InputSeed = random.Next();
         }
 
+        private void NextSeedButton_Click(object sender, RoutedEventArgs e)
+        {
+            NextSeed();
+        }
+
         // https://huggingface.co/docs/transformers/v4.23.1/en/main_classes/text_generation#transformers.generation_utils.GenerationMixin.generate
         private void GenerateJob(HttpClient client, string prompt, int seed, int maxNewTokens)
         {
@@ -114,11 +119,6 @@ namespace Haruby.LlmClient
             }
         }
 
-        private void NextSeedButton_Click(object sender, RoutedEventArgs e)
-        {
-            NextSeed();
-        }
-
         private void GenerateButton_Click(object sender, RoutedEventArgs e)
         {
             if (httpClient is null)
@@ -150,8 +150,10 @@ namespace Haruby.LlmClient
                 string filename = DateTimeToFileName(timeStamp);
                 File.WriteAllText(Path.Combine(saveDirPath, filename + ".txt"), target.Message);
 
-                using Stream jsonFile = File.Create(Path.Combine(saveDirPath, filename + ".json"));
-                JsonSerializer.Serialize(jsonFile, target);
+                using (Stream jsonFile = File.Create(Path.Combine(saveDirPath, filename + ".json")))
+                {
+                    JsonSerializer.Serialize(jsonFile, target);
+                }
 
                 // Fake delay
                 Thread.Sleep(200);
