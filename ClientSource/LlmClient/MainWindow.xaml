@@ -4,9 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Haruby.LlmClient"
-        mc:Ignorable="d" FontSize="18" WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d" FontSize="26" WindowStartupLocation="CenterScreen"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        Title="LLM Client" Height="600" Width="1000">
+        Title="LLM Client" Height="800" Width="1600">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -17,28 +17,35 @@
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition />
-                <RowDefinition Height="36"/>
-                <RowDefinition Height="36"/>
-                <RowDefinition Height="60" />
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="80" />
             </Grid.RowDefinitions>
 
             <TextBox Grid.Row="0" Margin="2" Text="{Binding InputPrompt, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" />
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="140" />
+                    <ColumnDefinition Width="220" />
                     <ColumnDefinition />
-                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="48" />
                 </Grid.ColumnDefinitions>
 
                 <CheckBox Grid.Column="0" IsChecked="{Binding IsUsingInputSeed}" Margin="4" VerticalAlignment="Center" VerticalContentAlignment="Center">Seed</CheckBox>
                 <TextBox Grid.Column="1" Margin="4" VerticalAlignment="Center" Text="{Binding InputSeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                <Button Grid.Column="2" Margin="2" Click="NextSeedButton_Click">N</Button>
+                <Button Grid.Column="2" Margin="2" Click="NextSeedButton_Click">
+                    N
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <TextBlock>Generate New Seed</TextBlock>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
             </Grid>
 
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="140" />
+                    <ColumnDefinition Width="220" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
@@ -61,16 +68,16 @@
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition />
-                <RowDefinition Height="36"/>
-                <RowDefinition Height="36"/>
-                <RowDefinition Height="60" />
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="80" />
             </Grid.RowDefinitions>
 
             <TextBox Grid.Row="0" Margin="2" Text="{Binding OutputMessage}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" />
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="140" />
+                    <ColumnDefinition Width="220" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
@@ -80,7 +87,7 @@
 
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="140" />
+                    <ColumnDefinition Width="220" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
